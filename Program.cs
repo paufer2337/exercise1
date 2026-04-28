@@ -27,7 +27,7 @@ class Program
     static  List<Employee> employees = new();
     static void Main()
     {
-        string action = "";
+        string? action = "";
 
         while (action != "99")
         {
@@ -47,6 +47,11 @@ class Program
 
 
             action = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(action))
+            {
+                Console.WriteLine("Invalid input. Please select a valid action.");
+                continue;
+            }
             Console.WriteLine();
 
             switch (action)
@@ -76,10 +81,22 @@ class Program
     static void AddEmp()
     {
         Console.Write("Enter first name: ");
-        string firstName = Console.ReadLine();
+        string? firstName = Console.ReadLine();
+
+        while (string.IsNullOrWhiteSpace(firstName))
+        {
+            Console.Write("First name cannot be empty. Please enter a valid first name: ");
+            firstName = Console.ReadLine();
+        }
 
         Console.Write("Enter last name: ");
-        string lastName = Console.ReadLine();
+        string? lastName = Console.ReadLine();
+
+        while (string.IsNullOrWhiteSpace(lastName))
+        {
+            Console.Write("Last name cannot be empty. Please enter a valid last name: ");
+            lastName = Console.ReadLine();
+        }
 
         Console.Write("Enter salary: ");
         decimal salary;
@@ -119,12 +136,24 @@ class Program
         Console.WriteLine("=== Update & Edit Employee ===");
         Console.WriteLine();
         Console.Write("Enter the firstname of the employee to update: ");
-        string firstName = Console.ReadLine();
+        string? firstName = Console.ReadLine();
+
+        while (string.IsNullOrWhiteSpace(firstName))
+        {
+            Console.Write("First name cannot be empty. Please enter a valid first name: ");
+            firstName = Console.ReadLine();
+        }
 
         Console.Write("Enter the lastname of the employee to update: ");
-        string lastName = Console.ReadLine();
+        string? lastName = Console.ReadLine();
 
-        Employee employee = employees.FirstOrDefault(e => e.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase));
+        while (string.IsNullOrWhiteSpace(lastName))
+        {
+            Console.Write("Last name cannot be empty. Please enter a valid last name: ");
+            lastName = Console.ReadLine();
+        }
+
+        Employee? employee = employees.FirstOrDefault(e => e.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase));
         if (employee != null)
         {
             Console.Write("Enter new salary: ");
@@ -146,14 +175,14 @@ class Program
     static void DeleteEmp()
     {
         Console.Write("Enter the firstname of the employee to delete: ");
-        string firstName = Console.ReadLine();
+        string? firstName = Console.ReadLine();
 
         Console.Write("Enter the lastname of the employee to delete: ");
-        string lastName = Console.ReadLine();
+        string? lastName = Console.ReadLine();
 
         Console.WriteLine();
 
-        Employee employee = employees.FirstOrDefault(e => e.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase));
+        Employee? employee = employees.FirstOrDefault(e => e.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase));
         if (employee != null)
         {
             employees.Remove(employee);
