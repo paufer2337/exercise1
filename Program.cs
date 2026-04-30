@@ -6,7 +6,6 @@ using System.Linq;
 
 
 
-
 class Employee
 {
     public string FirstName { get; set; }
@@ -100,8 +99,9 @@ class Program
 
         Console.Write("Enter salary: ");
         decimal salary;
-        while (!decimal.TryParse(Console.ReadLine(), out salary))
+        while (!decimal.TryParse(Console.ReadLine(), out salary) || salary < 0)
         {
+            Console.WriteLine();
             Console.Write("Invalid input. Please enter a valid salary: ");
         }
 
@@ -182,7 +182,9 @@ class Program
 
         Console.WriteLine();
 
-        Employee? employee = employees.FirstOrDefault(e => e.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase));
+        Employee? employee = employees.FirstOrDefault(e => 
+        e.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase) &&
+        e.LastName.Equals(lastName, StringComparison.OrdinalIgnoreCase));
         if (employee != null)
         {
             employees.Remove(employee);
