@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading;
 
 
 
@@ -27,9 +27,10 @@ class Program
     static void Main()
     {
         string? action = "";
-
         while (action != "99")
         {
+            Console.Clear();
+
             Console.WriteLine();
             Console.WriteLine("====================================");
             Console.WriteLine("=== Employee Management Overview ===");
@@ -42,13 +43,13 @@ class Program
             Console.WriteLine("99. Exit");
             Console.WriteLine();
             Console.Write("Select an action: ");
-            Console.WriteLine();
 
 
             action = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(action))
             {
                 Console.WriteLine("Invalid input. Please select a valid action.");
+                CountDownToMenu();
                 continue;
             }
             Console.WriteLine();
@@ -72,6 +73,7 @@ class Program
                     break;
                 default:
                     Console.WriteLine("Invalid option, please try again.");
+                    CountDownToMenu();
                     break;
             }
         }
@@ -114,11 +116,16 @@ class Program
 
     static void ListAllEmp()
     {
+        Console.WriteLine();
+        
         if (employees.Count == 0)
         {
-            Console.WriteLine("No employees found.");
+            Console.WriteLine();
+            Console.WriteLine("~ No employees found...");
+            CountDownToMenu();
             return;
         }
+        
 
         Console.WriteLine();
         Console.WriteLine("=== Employee List ===");
@@ -127,6 +134,10 @@ class Program
         {
             Console.WriteLine($"Full Name: {employee.Name}   |   Salary: {employee.Salary:C}");
         }
+
+        Console.WriteLine();
+        Console.WriteLine("Press any key to return to Menu...");
+        Console.ReadKey();
     }
 
 
@@ -153,15 +164,22 @@ class Program
             lastName = Console.ReadLine();
         }
 
-        Employee? employee = employees.FirstOrDefault(e => e.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase));
+        Employee? employee = employees.FirstOrDefault(e => 
+        e.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase) && 
+        e.LastName.Equals(lastName, StringComparison.OrdinalIgnoreCase));
+        
+        Console.WriteLine();
+
         if (employee != null)
         {
+            
             Console.Write("Enter new salary: ");
             decimal newSalary;
-            while (!decimal.TryParse(Console.ReadLine(), out newSalary))
+            while (!decimal.TryParse(Console.ReadLine(), out newSalary) || newSalary < 0)
             {
                 Console.Write("Invalid input. Please enter a valid salary: ");
             }
+            Console.WriteLine();
             employee.Salary = newSalary;
             Console.WriteLine("~ Salary updated successfully. ~");
         }
@@ -169,6 +187,8 @@ class Program
         {
             Console.WriteLine("Employee not found.");
         }
+
+        CountDownToMenu();
     }
 
 
@@ -194,5 +214,22 @@ class Program
         {
             Console.WriteLine("Employee not found.");
         }
+        CountDownToMenu();
     }
+        
+    static void CountDownToMenu()
+    {
+        Console.WriteLine();
+
+        for (int i = 3; i > 0; i--)
+        {
+            Console.Write($"\rReturning to menu in {i}...   ");
+            Thread.Sleep(1000);
+        }
+
+        Console.WriteLine();
+
+    }
+    
+
 }   
